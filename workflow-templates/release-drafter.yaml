@@ -16,4 +16,4 @@ on:
 
 jobs:
   update_release_draft:
-    uses: nvidia-merlin/.github/workflows/release-drafter-common.yaml@main
+    uses: nvidia-merlin/.github/.github/workflows/release-drafter-common.yaml@main
