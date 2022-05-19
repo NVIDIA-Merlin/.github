@@ -1,7 +1,6 @@
 name: triage_issues
 on:
-  issues:
-    types: [opened, reopened]
+  workflow_call:
 
 jobs:
   triage_issue:
