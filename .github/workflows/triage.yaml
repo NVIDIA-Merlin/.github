@@ -1,6 +1,13 @@
 name: triage_issues
 on:
   workflow_call:
+    secrets:
+      TRIAGE_APP_ID:
+        description: 'APP_ID used for generating triage token'
+        required: true
+      TRIAGE_APP_PEM:
+        description: 'APP_PEM used for generating triage token'
+        required: true
 
 jobs:
   triage_issue:
