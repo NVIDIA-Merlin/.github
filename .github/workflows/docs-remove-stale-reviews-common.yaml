@@ -1,0 +1,48 @@
+name: docs-remove-stale-reviews
+
+# Suggested `on` events for the consuming repository:
+# on:
+#   schedule:
+#     # 42 minutes after 0:00 UTC on Sundays
+#     - cron: "42 0 * * 0"
+#   workflow_dispatch:
+
+on:
+  workflow_call:
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  remove:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: "gh-pages"
+      - name: Initialize Git configuration
+        run: |
+          git config user.name docs-remove-stale-reviews
+          git config user.email do-not-send-@github.com
+      - name: List up to 200 open PRs
+        run: |
+          gh pr list -L 200 -s open
+      - name: Remove stale reviews
+        run: |
+          open=$(gh pr list -L 200 -s open --json 'number' -q '.[]|.pr = "pr-\(.number)"|.pr')
+          reviews=$(ls review/)
+          for i in ${reviews}; do
+            echo "Checking if ${i} is still open"
+            if [[ ${open[*]} =~ "${i}" ]]; then
+              echo "Removing review/${i}"
+              git rm -rf "review/${i}"
+            fi
+          done
+      - name: Commit changes
+        run: |
+          if git commit -m 'Removing stale reviews from GitHub Pages.'; then
+            git push -f
+          else
+           echo "Nothing changed."
+          fi
