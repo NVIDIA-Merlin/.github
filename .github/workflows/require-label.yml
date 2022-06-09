@@ -1,0 +1,33 @@
+name: Require PR Labels
+
+on:
+  workflow_call:
+
+jobs:
+  check-labels:
+    if: |-
+        !(
+          contains(github.event.*.labels.*.name, 'breaking') ||
+          contains(github.event.*.labels.*.name, 'bug') ||
+          contains(github.event.*.labels.*.name, 'feature') ||
+          contains(github.event.*.labels.*.name, 'enhancement') ||
+          contains(github.event.*.labels.*.name, 'documentation') ||
+          contains(github.event.*.labels.*.name, 'examples') ||
+          contains(github.event.*.labels.*.name, 'build') ||
+          contains(github.event.*.labels.*.name, 'dependencies') ||
+          contains(github.event.*.labels.*.name, 'chore') ||
+          contains(github.event.*.labels.*.name, 'ci') ||
+          contains(github.event.*.labels.*.name, 'skip-changelog') 
+        )
+    name: Check Label
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        env:
+          LABELS: ${{ toJson(github.event.*.labels.*.name) }}
+        run: |
+          echo "Pull request doesn't contain a label for release notes"
+          echo "PR should be labelled as described in "
+          echo "https://github.com/NVIDIA-Merlin/Merlin/blob/main/CONTRIBUTING.md#label-your-prs"
+          echo "but was labelled $LABELS"
+          exit 1
