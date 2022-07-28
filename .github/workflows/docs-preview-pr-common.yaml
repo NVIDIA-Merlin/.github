@@ -27,7 +27,7 @@ jobs:
       - name: Check for GitHub Pages
         id: api-resp
         run: |
-            $has_pages=$(gh api repos/{owner}/{repo} -q '.has_pages')
+            has_pages=$(gh api repos/{owner}/{repo} -q '.has_pages')
             if [ "true" != "${has_pages}" ]; then
               echo "GitHub pages is not active for the repository. Quitting."
               return
