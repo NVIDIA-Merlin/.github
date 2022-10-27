@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: "gh-pages"
       - name: Initialize Git configuration
@@ -31,6 +31,10 @@ jobs:
       - name: Remove stale reviews
         shell: bash
         run: |
+          if [ ! -d "review" ]; then
+            echo "No reviews exist."
+            exit 0
+          fi
           open=$(gh pr list -L 200 -s open --json 'number' -q '.[]|.pr = "pr-\(.number)"|.pr')
           reviews=$(ls review/)
           for i in ${reviews}; do

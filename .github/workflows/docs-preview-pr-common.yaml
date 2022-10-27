@@ -27,14 +27,14 @@ jobs:
       - name: Check for GitHub Pages
         id: api-resp
         run: |
-            has_pages=$(gh api repos/{owner}/{repo} -q '.has_pages')
+            has_pages=$(gh api "repos/${GITHUB_REPOSITORY}" -q '.has_pages')
             if [ "true" != "${has_pages}" ]; then
               echo "GitHub pages is not active for the repository. Quitting."
               return
             fi
 
-            url=$(gh api repos/{owner}/{repo}/pages -q '.html_url')
-            branch=$(gh api repos/{owner}/{repo}/pages -q '.source.branch')
+            url=$(gh api "repos/${GITHUB_REPOSITORY}/pages" -q '.html_url')
+            branch=$(gh api "repos/${GITHUB_REPOSITORY}/pages" -q '.source.branch')
 
             echo "::set-output name=html_url::${url}"
             echo "::set-output name=branch::${branch}"
@@ -45,7 +45,7 @@ jobs:
     needs: [get-gh-pages-url]
     if: needs.get-gh-pages-url.outputs.url != ''
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ needs.get-gh-pages-url.outputs.branch }}
       - name: Initialize Git configuration
