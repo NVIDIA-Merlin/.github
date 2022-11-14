@@ -82,6 +82,8 @@ jobs:
           if [ ! -d "${{ env.REVIEW_DIR }}" ]; then
             mkdir "${{ env.REVIEW_DIR }}"
           fi
+          find ./html-build-artifact/ -name .doctrees -exec rm -rf {} \;
+          find ./html-build-artifact/ -name .buildinfo -exec rm -rf {} \;
           mv ./html-build-artifact/ "${{ env.PR_REVIEW_DIR }}"
           git add "${{ env.PR_REVIEW_DIR }}"
       # If the PR was closed, merged or not, delete review directory.
