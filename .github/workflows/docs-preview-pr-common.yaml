@@ -36,8 +36,8 @@ jobs:
             url=$(gh api "repos/${GITHUB_REPOSITORY}/pages" -q '.html_url')
             branch=$(gh api "repos/${GITHUB_REPOSITORY}/pages" -q '.source.branch')
 
-            echo "::set-output name=html_url::${url}"
-            echo "::set-output name=branch::${branch}"
+            echo "html_url=${url}" >> $GITHUB_OUTPUT
+            echo "branch=${branch}" >> $GITHUB_OUTPUT
 
   # Identify the dir for the HTML.
   store-html:
