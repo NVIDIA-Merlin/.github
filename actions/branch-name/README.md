@@ -25,7 +25,7 @@ For a pull request build. will return the name of the base branch the pull reque
 ```yaml
 - name: Get Branch name
   id: get-branch-name
-  uses: NVIDIA-Merlin/.github/actions/branch-name@branch-name
+  uses: NVIDIA-Merlin/.github/actions/branch-name@main
 
 - name: Use the branch name
   run: |
