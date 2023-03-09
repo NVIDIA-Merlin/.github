@@ -39,12 +39,11 @@ EOF
     fi
 elif [[ "${GITHUB_REF_TYPE}" == "branch" ]]
 then
-    branch="${GITHUB_BASE_REF}"
+    branch="${GITHUB_BASE_REF:-$GITHUB_REF_NAME}"
     if [[ -z "${branch}" ]]
     then
         cat <<EOF
-::error::Running branch build where env var GITHUB_BASE_REF is not set (not a pull request).
-This action currently supports only builds on tags or pull requests.
+::error::Running branch build where and could not find a branch name from either GITHUB_BASE_REF (pull request) or GITHUB_REF_NAME (merge commit)
 EOF
         exit 1
     fi
