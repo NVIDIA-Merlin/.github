@@ -39,7 +39,7 @@ then
     if [[ -z "${branch}" ]]
     then
         cat <<EOF
-::error::Running branch build where `GITHUB_BASE_REF` is not set (not a pull request).
+::error::Running branch build where env var GITHUB_BASE_REF is not set (not a pull request).
 This action currently supports only builds on tags or pull requests.
 EOF
         exit 1
