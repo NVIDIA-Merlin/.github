@@ -23,6 +23,7 @@ then
     # find the release branch that we're pointing at
     branch=$(
         git branch \
+            --remotes \
             --contains "${GITHUB_REF_NAME}" \
             --list "*${release_branch_prefix}*"  \
             --format "%(refname:short)" \
