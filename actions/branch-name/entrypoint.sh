@@ -8,6 +8,9 @@ if [[ "${GITHUB_REF_TYPE}" == "tag" ]]
 then
     remote_name="origin"
     release_branch_refspec="+refs/heads/${release_branch_prefix}*:refs/remotes/${remote_name}/${release_branch_prefix}*"
+
+    git config --global --add safe.directory /github/workspace
+
     # fetch release branches (the branch name is not automatically fetched by the actions/checkout step)
     git -c protocol.version=2 fetch \
         --no-tags \
