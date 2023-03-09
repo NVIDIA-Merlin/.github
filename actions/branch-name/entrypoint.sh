@@ -49,4 +49,4 @@ else
 EOF
 fi
 
-echo "branch=$branch" #>> $GITHUB_OUTPUT
+echo "branch=$branch" >> $GITHUB_OUTPUT
