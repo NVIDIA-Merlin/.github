@@ -37,7 +37,8 @@ In the case of a tag build we don't have access to the branch name without perfo
 The reason we need to find the release branch name corresponding to the tag is so that we can run the tests with the corresponding versions of other packges in our ecosystem that we depend on.
 
 - tag
-  - the build for a tag on `release-23.02` returns branch `release-23.02`
+  - the build for a tag on branch `release-23.02` returns branch `release-23.02`
+  - the build for a tag on branch `xyz` returns an error because the branch doesn't start with `{release-branch-prefix}`
 - pull request
   - the build for a pull_request with base branch `main` returns branch `main`
   - the build for a pull request with base branch `release-23.02` returns branch `release-23.02`
