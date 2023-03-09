@@ -1,0 +1,16 @@
+# action.yml
+name: 'Branch Name'
+description: 'Get the Branch Name to use for tests'
+inputs:
+  release-branch-prefix:
+    description: 'The prefix of the release branch'
+    required: false
+    default: 'release'
+outputs:
+  branch-name:
+    description: 'The name of the branch'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.release-branch-prefix }}
