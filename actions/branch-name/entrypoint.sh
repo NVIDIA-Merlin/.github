@@ -6,7 +6,6 @@ branch=""
 
 if [[ "${GITHUB_REF_TYPE}" == "tag" ]]
 then
-    release_branch_pattern="*${release_branch_prefix}*"
     remote_name="origin"
     release_branch_refspec="+refs/heads/${release_branch_prefix}*:refs/remotes/${remote_name}/${release_branch_prefix}*"
     # fetch release branches (the branch name is not automatically fetched by the actions/checkout step)
@@ -22,7 +21,7 @@ then
     branch=$(
         git branch \
             --contains "${GITHUB_REF_NAME}" \
-            --list "${release_branch_pattern}"  \
+            --list "*${release_branch_prefix}*"  \
             --format "%(refname:short)" \
             | sed -e 's/^origin\///'
           )
