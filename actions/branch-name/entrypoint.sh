@@ -42,11 +42,13 @@ then
 ::error::Running branch build where `GITHUB_BASE_REF` is not set (not a pull request).
 This action currently supports only builds on tags or pull requests.
 EOF
+        exit 1
     fi
 else
     cat <<EOF
 ::error::GITHUB_REF_TYPE must be one of 'branch' or 'tag'. Found '${GITHUB_REF_TYPE}'
 EOF
+    exit 1
 fi
 
 echo "branch=$branch" >> $GITHUB_OUTPUT
