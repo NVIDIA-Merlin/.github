@@ -1,0 +1,31 @@
+name: Check Base Branch
+
+on:
+  workflow_call:
+    inputs:
+      development-branch-name:
+        description: 'The name of the development branch that pull requests should target'
+        required: false
+        type: string
+        default: 'main'
+      skip-check-label:
+        description: 'The label used to skip this check'
+        default: 'skip-base-branch-check'
+        type: string
+        required: false
+
+jobs:
+  check:
+    name: Require Development Branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Base Ref is Development Branch
+        if: ${{ !contains(github.event.*.labels.*.name, inputs.skip-check-label) }}
+        run: |
+          if [[ ${{ github.base_ref }} != ${{ inputs.development-branch-name }} ]]
+          then
+              echo "::error::Pull Request base ref must be the development branch: '${{ inputs.development-branch-name }}'. Found base ref: '${{ github.base_ref }}' ."
+              echo "If you're sure you need to merge this change into '${{ github.base_ref }}' instead. "
+              echo "You can add the label '${{ inputs.skip-check-label }}'. "
+              exit 1
+          fi
