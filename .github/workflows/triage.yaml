@@ -120,7 +120,7 @@ jobs:
               $priority_field: ID!
               $priority_value: String!
               $date_field: ID!
-              $date_value: String!
+              $date_value: Date!
             ) {
               set_priority: updateProjectV2ItemFieldValue(input: {
                 projectId: $project
