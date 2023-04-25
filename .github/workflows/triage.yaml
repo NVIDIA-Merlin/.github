@@ -91,7 +91,7 @@ jobs:
               $impact_field: ID!
               $impact_value: String!
             ) {
-              set_priority: updateProjectV2ItemField(input: {
+              set_priority: updateProjectV2ItemFieldValue(input: {
                 projectId: $project
                 itemId: $item
                 fieldId: $impact_field
@@ -116,7 +116,7 @@ jobs:
               $date_field: ID!
               $date_value: String!
             ) {
-              set_priority: updateProjectV2ItemField(input: {
+              set_priority: updateProjectV2ItemFieldValue(input: {
                 projectId: $project
                 itemId: $item
                 fieldId: $priority_field
@@ -126,7 +126,7 @@ jobs:
                   id
                   }
               }
-              set_date_posted: updateProjectV2ItemField(input: {
+              set_date_posted: updateProjectV2ItemFieldValue(input: {
                 projectId: $project
                 itemId: $item
                 fieldId: $date_field
