@@ -33,8 +33,14 @@ jobs:
                   id
                   fields(first:50) {
                     nodes {
-                      id
-                      name
+                      ... on ProjectV2SingleSelectField {
+                        id
+                        name
+                        options {
+                          id
+                          name
+                        }
+                      }
                     }
                   }
                 }
