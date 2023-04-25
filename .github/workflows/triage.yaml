@@ -31,11 +31,10 @@ jobs:
               organization(login: $org){
                 projectV2(number: $number) {
                   id
-                  fields(first:20) {
+                  fields(first:50) {
                     nodes {
                       id
                       name
-                      settings
                     }
                   }
                 }
@@ -46,7 +45,7 @@ jobs:
           echo 'DATE_FIELD_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Date Added") | .id' project_data.json) >> $GITHUB_ENV
           echo 'PRIORITY_FIELD_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Priority") | .id' project_data.json) >> $GITHUB_ENV
           echo 'IMPACT_FIELD_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Impact") | .id' project_data.json) >> $GITHUB_ENV
-          echo 'NEEDS_TRIAGE_OPTION_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Priority") |.settings | fromjson.options[] | select(.name=="Needs Triage") |.id' project_data.json) >> $GITHUB_ENV
+          echo 'NEEDS_TRIAGE_OPTION_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Priority") |.options[] | select(.name=="Needs Triage") | .id' project_data.json) >> $GITHUB_ENV
 
       - name: Add Issue to Project
         env:
