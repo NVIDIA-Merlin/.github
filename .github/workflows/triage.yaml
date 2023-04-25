@@ -65,7 +65,7 @@ jobs:
                   id
                 }
               }
-            }' -f project=$PROJECT_ID -f issue=$ISSUE_ID --jq '.data.addProjectV2ItemById.projectV2Item.id')"
+            }' -f project=$PROJECT_ID -f issue=$ISSUE_ID --jq '.data.addProjectV2ItemById.item.id')"
           
           echo 'ITEM_ID='$item_id >> $GITHUB_ENV
 
@@ -126,17 +126,17 @@ jobs:
                 projectId: $project
                 itemId: $item
                 fieldId: $priority_field
-                value: $priority_value
+                value: {singleSelectOptionId: $priority_value}
               }) {
                 projectV2Item {
                   id
-                  }
+                }
               }
               set_date_posted: updateProjectV2ItemFieldValue(input: {
                 projectId: $project
                 itemId: $item
                 fieldId: $date_field
-                value: $date_value
+                value: {date: $date_value}
               }) {
                 projectV2Item {
                   id
