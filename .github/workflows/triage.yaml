@@ -29,7 +29,7 @@ jobs:
           gh api graphql -f query='
             query($org: String!, $number: Int!) {
               organization(login: $org){
-                projectNext(number: $number) {
+                projectV2(number: $number) {
                   id
                   fields(first:20) {
                     nodes {
@@ -42,11 +42,11 @@ jobs:
               }
             }' -f org=$ORGANIZATION -F number=$PROJECT_NUMBER > project_data.json
 
-          echo 'PROJECT_ID='$(jq '.data.organization.projectNext.id' project_data.json) >> $GITHUB_ENV
-          echo 'DATE_FIELD_ID='$(jq '.data.organization.projectNext.fields.nodes[] | select(.name== "Date Added") | .id' project_data.json) >> $GITHUB_ENV
-          echo 'PRIORITY_FIELD_ID='$(jq '.data.organization.projectNext.fields.nodes[] | select(.name== "Priority") | .id' project_data.json) >> $GITHUB_ENV
-          echo 'IMPACT_FIELD_ID='$(jq '.data.organization.projectNext.fields.nodes[] | select(.name== "Impact") | .id' project_data.json) >> $GITHUB_ENV
-          echo 'NEEDS_TRIAGE_OPTION_ID='$(jq '.data.organization.projectNext.fields.nodes[] | select(.name== "Priority") |.settings | fromjson.options[] | select(.name=="Needs Triage") |.id' project_data.json) >> $GITHUB_ENV
+          echo 'PROJECT_ID='$(jq '.data.organization.projectV2.id' project_data.json) >> $GITHUB_ENV
+          echo 'DATE_FIELD_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Date Added") | .id' project_data.json) >> $GITHUB_ENV
+          echo 'PRIORITY_FIELD_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Priority") | .id' project_data.json) >> $GITHUB_ENV
+          echo 'IMPACT_FIELD_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Impact") | .id' project_data.json) >> $GITHUB_ENV
+          echo 'NEEDS_TRIAGE_OPTION_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Priority") |.settings | fromjson.options[] | select(.name=="Needs Triage") |.id' project_data.json) >> $GITHUB_ENV
 
       - name: Add Issue to Project
         env:
@@ -55,12 +55,12 @@ jobs:
         run: |
           item_id="$( gh api graphql -f query='
             mutation($project:ID!, $issue:ID!) {
-              addProjectNextItem(input: {projectId: $project, contentId: $issue}) {
-                projectNextItem {
+              addProjectV2Item(input: {projectId: $project, contentId: $issue}) {
+                projectV2Item {
                   id
                 }
               }
-            }' -f project=$PROJECT_ID -f issue=$ISSUE_ID --jq '.data.addProjectNextItem.projectNextItem.id')"
+            }' -f project=$PROJECT_ID -f issue=$ISSUE_ID --jq '.data.addProjectV2Item.projectV2Item.id')"
           
           echo 'ITEM_ID='$item_id >> $GITHUB_ENV
 
@@ -92,13 +92,13 @@ jobs:
               $impact_field: ID!
               $impact_value: String!
             ) {
-              set_priority: updateProjectNextItemField(input: {
+              set_priority: updateProjectV2ItemField(input: {
                 projectId: $project
                 itemId: $item
                 fieldId: $impact_field
                 value: $impact_value
               }) {
-                projectNextItem {
+                projectV2Item {
                   id
                   }
               }
@@ -117,23 +117,23 @@ jobs:
               $date_field: ID!
               $date_value: String!
             ) {
-              set_priority: updateProjectNextItemField(input: {
+              set_priority: updateProjectV2ItemField(input: {
                 projectId: $project
                 itemId: $item
                 fieldId: $priority_field
                 value: $priority_value
               }) {
-                projectNextItem {
+                projectV2Item {
                   id
                   }
               }
-              set_date_posted: updateProjectNextItemField(input: {
+              set_date_posted: updateProjectV2ItemField(input: {
                 projectId: $project
                 itemId: $item
                 fieldId: $date_field
                 value: $date_value
               }) {
-                projectNextItem {
+                projectV2Item {
                   id
                 }
               }
