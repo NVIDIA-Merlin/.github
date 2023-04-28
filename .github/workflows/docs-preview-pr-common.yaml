@@ -39,6 +39,8 @@ jobs:
   store-html:
     runs-on: ubuntu-latest
     needs: [get-gh-pages-url]
+    permissions:
+      contents: write
     if: needs.get-gh-pages-url.outputs.url != ''
     steps:
       - uses: actions/checkout@v3
