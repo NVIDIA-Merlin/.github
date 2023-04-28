@@ -57,7 +57,7 @@ jobs:
           git config user.email do-not-send-@github.com
       - name: Download artifacts
         run: |
-          workflow_id=${{ inputs.development-branch-name }}
+          workflow_id=${{ inputs.workflow-id }}
           workflow_id="${WF_ID:-$workflow_id}"
           gh run view $workflow_id
           gh run download $workflow_id
