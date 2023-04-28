@@ -8,6 +8,12 @@ name: docs-preview-pr
 
 on:
   workflow_call:
+    inputs:
+      workflow-id:
+        description: "The workflow ID that to fetch artifacts from"
+        required: False
+        type: string
+        default: ''
 
 env:
   WF_ID: ${{ github.event.workflow_run.id }}
@@ -51,8 +57,10 @@ jobs:
           git config user.email do-not-send-@github.com
       - name: Download artifacts
         run: |
-          gh run view "${WF_ID}"
-          gh run download "${WF_ID}"
+          workflow_id=${{ inputs.development-branch-name }}
+          workflow_id="${WF_ID:-$workflow_id}"
+          gh run view $workflow_id
+          gh run download $workflow_id
           PR=$(cat ./pr/pr.txt)
           MERGED=$(cat ./pr/merged.txt)
           ACTION=$(cat ./pr/action.txt)
