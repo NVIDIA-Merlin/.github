@@ -105,7 +105,7 @@ jobs:
                 projectId: $project
                 itemId: $item
                 fieldId: $impact_field
-                value: $impact_value
+                value: {text: $impact_value}
               }) {
                 projectV2Item {
                   id
