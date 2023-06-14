@@ -21,6 +21,7 @@ on:
 
 jobs:
   maybe-set:
+    name: Maybe Set Base Branch
     if: github.base_ref == inputs.stable-branch-name
     runs-on: ubuntu-latest
     permissions:
@@ -37,7 +38,7 @@ jobs:
             /repos/${{ github.repository }}/pulls/${{ github.event.number }} \
             -f base='${{ inputs.development-branch-name }}'
   check:
-    name: Require Development Branch
+    name: Require Development Base Branch
     needs: [maybe-set]
     if: ${{ always() }}
     runs-on: ubuntu-latest
