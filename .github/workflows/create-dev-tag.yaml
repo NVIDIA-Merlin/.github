@@ -40,4 +40,4 @@ jobs:
         run: |
           ref="refs/tags/v${{ steps.next_release.outputs.VERSION }}.dev0"
           git update-ref "${ref}" "${{ github.sha }}"
-          git push -f origin "${ref}"
+          git push origin "${ref}"
