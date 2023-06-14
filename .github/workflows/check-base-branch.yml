@@ -45,7 +45,13 @@ jobs:
       - name: Check Base Ref is Development Branch
         if: ${{ !contains(github.event.*.labels.*.name, inputs.skip-check-label) }}
         run: |
-          if [[ ${{ github.base_ref }} != ${{ inputs.development-branch-name }} ]]
+          base_ref=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/${{ github.repository }}/pulls/${{ github.event.number }} \
+            | jq '.base.ref'
+          )
+          if [[ "${base_ref}" != ${{ inputs.development-branch-name }} ]]
           then
               echo "::error::Pull Request base ref must be the development branch: '${{ inputs.development-branch-name }}'. Found base ref: '${{ github.base_ref }}' ."
               echo "If you're sure you need to merge this change into '${{ github.base_ref }}' instead. "
