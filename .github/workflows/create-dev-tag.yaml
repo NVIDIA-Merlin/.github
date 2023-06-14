@@ -11,7 +11,7 @@ name: Create Dev Tag
 #   create-dev-tag:
 #     permissions:
 #       contents: write
-#     uses: NVIDIA-Merlin/.github/.github/workflows/dev-tag.yaml@main
+#     uses: NVIDIA-Merlin/.github/.github/workflows/create-dev-tag.yaml@main
 
 on:
   workflow_call:
