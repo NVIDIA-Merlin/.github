@@ -44,6 +44,8 @@ jobs:
     steps:
       - name: Check Base Ref is Development Branch
         if: ${{ !contains(github.event.*.labels.*.name, inputs.skip-check-label) }}
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           base_ref=$(gh api \
             -H "Accept: application/vnd.github+json" \
