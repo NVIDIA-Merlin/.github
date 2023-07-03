@@ -43,9 +43,14 @@ then
     if [[ -z "${branch}" ]]
     then
         cat <<EOF
-::error::Running branch build where and could not find a branch name from either GITHUB_BASE_REF (pull request) or GITHUB_REF_NAME (merge commit)
+::error::Running branch build and could not find a branch name from either GITHUB_BASE_REF (pull request) or GITHUB_REF_NAME (push)
 EOF
         exit 1
+    fi
+    # handle case where the branch is a pull request branch build (RAPIDS ops-bot)
+    if [[ "$branch" == "pull-request"* ]]
+    then
+        branch="main"
     fi
 else
     cat <<EOF
