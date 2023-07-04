@@ -1,0 +1,43 @@
+name: Create Dev Tag
+
+# Expected usage in parent workflow
+#
+# on:
+#   push:
+#     branches:
+#       - 'release-[0-9]+.[0-9]+'
+#
+# jobs:
+#   create-dev-tag:
+#     permissions:
+#       contents: write
+#     uses: NVIDIA-Merlin/.github/.github/workflows/create-dev-tag.yaml@main
+
+on:
+  workflow_call:
+
+jobs:
+  create-tag:
+    if: github.event.created
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract next release version
+        id: next_release
+        run: |
+          version_year=$(echo ${{ github.ref_name }}  | perl -lane 'print m/(\d+).\d+/g')
+          version_month=$(echo ${{ github.ref_name }}  | perl -lane 'print m/\d+.(\d+)/g')
+          if [ "$version_month" == "12" ]; then
+              version_year=$((version_year + 1))
+          fi
+          version_month=$((version_month % 12))
+          version_month=$((version_month + 1))
+          version_month=$(printf "%02d" $version_month)
+          echo "VERSION=$version_year.$version_month" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v3
+      - name: Push dev tag
+        run: |
+          ref="refs/tags/v${{ steps.next_release.outputs.VERSION }}.dev0"
+          git update-ref "${ref}" "${{ github.sha }}"
+          git push origin "${ref}"
