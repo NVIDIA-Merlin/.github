@@ -45,7 +45,7 @@ jobs:
     needs: [get-gh-pages-url]
     if: needs.get-gh-pages-url.outputs.url != ''
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ needs.get-gh-pages-url.outputs.branch }}
       - name: Initialize Git configuration
@@ -55,7 +55,7 @@ jobs:
       - name: Download artifacts
         run: |
           gh run view "${WF_ID}"
-          gh run download "${WF_ID}"
+          gh run download "${WF_ID}" -n pr -n html-build-artifact
           PR=$(cat ./pr/pr.txt)
           MERGED=$(cat ./pr/merged.txt)
           ACTION=$(cat ./pr/action.txt)
